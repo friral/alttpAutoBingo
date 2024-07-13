@@ -17,6 +17,11 @@ for (let i = 0x280; i < 0x300; i++) {
     });
 }
 
+let maxHealthInHearts = 0;
+let startingHealthInHearts = 3; // Wird kaputt gehen wenn der Romhack eine abweichende startingHealth zulässt
+let heartcontainerCount = 0;
+let heartPiecesCount = 0;
+
 // All Bingo Cards in alttp_randomizer_generator.js, trying to implement as many as possible...
 
 bingoTiles.push({
@@ -382,6 +387,7 @@ bingoTiles.push({
         const deadEndDoor = data[0xad] & 0x80;
         const bridgeDoor = data[0xb3] & 0x80;
         const bossDoor = data[0xb3] & 0x40;
+        // FIXME didnt get true after 5 doors in a run
         return bigChestToGibdosDoor && pinballDoor && deadEndDoor && bridgeDoor && bossDoor;
     }
 })
@@ -535,6 +541,7 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
+        // FIXME this got true when I opened the first chest on the right side
         const locations = [[0x118, 0x20]]
         return hasAll(data, locations)
         // more GT room data:
@@ -857,6 +864,7 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
+        // FIXME triggers at the beginning of the game
         return (0x2f0 & 0x20)
     }
 })
@@ -901,7 +909,7 @@ bingoTiles.push({
 })
 
 bingoTiles.push({
-    content: "Byrna Cave",
+    content: "Spike Cave",
     tileId: null,
     isOpen: true,
     check: function(data) {
@@ -1030,14 +1038,11 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        //  0x448 falsch dokumentiert, enthält die anzahl der container statt heartpieces
-        //  data[0x429] enthält nur die anzahl gesammelter pendants, keine relation zu heart pieces erkennbar
-        // http://alttp.mymm1.com/wiki/ALTTPR_SRAM_Map
-        const maxHealthInHearts = data[0x36C] / 8;
-        const startingHealthInHearts = 3; // Wird kaputt gehen wenn der Romhack eine abweichende startingHealth zulässt
-        const heartcontainerCount = data[0x448];
-        const heartpiecesCount = (maxHealthInHearts - startingHealthInHearts - heartcontainerCount) * 4
-        return heartpiecesCount >= 8;
+        if (heartPiecesCount !== data[0x448]) {
+            console.log("heartcontainerCount has changed from " + heartPiecesCount + " to " + data[0x448]);
+            heartPiecesCount = data[0x448];
+        }
+        return data[0x448] >= 8;
     }
 })
 
@@ -1046,14 +1051,11 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        //  0x448 falsch dokumentiert, enthält die anzahl der container statt heartpieces
-        //  data[0x429] enthält nur die anzahl gesammelter pendants, keine relation zu heart pieces erkennbar
-        // http://alttp.mymm1.com/wiki/ALTTPR_SRAM_Map
-        const maxHealthInHearts = data[0x36C] / 8;
-        const startingHealthInHearts = 3; // Wird kaputt gehen wenn der Romhack eine abweichende startingHealth zulässt
-        const heartcontainerCount = data[0x448];
-        const heartpiecesCount = (maxHealthInHearts - startingHealthInHearts - heartcontainerCount) * 4
-        return heartpiecesCount >= 12;
+        if (heartPiecesCount !== data[0x448]) {
+            console.log("heartcontainerCount has changed from " + heartPiecesCount + " to " + data[0x448]);
+            heartPiecesCount = data[0x448];
+        }
+        return data[0x448] >= 12;
     }
 })
 
@@ -1062,9 +1064,12 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        // 0x448 falsch dokumentiert, enthält die anzahl der container statt heartpieces
-        // http://alttp.mymm1.com/wiki/ALTTPR_SRAM_Map
-        return data[0x448] >= 4
+        // FIXME data[0x429] enthält nur die anzahl gesammelter pendants, keine relation zu heart containers erkennbar
+        if (heartcontainerCount !== data[0x429]) {
+            console.log("heartcontainerCount has changed from " + heartcontainerCount + " to " + data[0x429]);
+            heartcontainerCount = data[0x429];
+        }
+        return data[0x429] >= 4
     }
 })
 
@@ -1073,9 +1078,12 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        // 0x448 falsch dokumentiert, enthält die anzahl der container statt heartpieces
-        // http://alttp.mymm1.com/wiki/ALTTPR_SRAM_Map
-        return data[0x448] >= 6
+        // FIXME data[0x429] enthält nur die anzahl gesammelter pendants, keine relation zu heart containers erkennbar
+        if (heartcontainerCount !== data[0x429]) {
+            console.log("heartcontainerCount has changed from " + heartcontainerCount + " to " + data[0x429]);
+            heartcontainerCount = data[0x429];
+        }
+        return data[0x429] >= 6
     }
 })
 
@@ -1084,7 +1092,11 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        return data[0x36C] / 8 >= 10
+        if (maxHealthInHearts !== (data[0x36C] / 8)) {
+            console.log("heartcontainerCount has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
+            heartcontainerCount = (data[0x36C] / 8);
+        }
+        return (data[0x36C] / 8) >= 10
     }
 })
 
@@ -1093,7 +1105,11 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        return data[0x36C] / 8 >= 14
+        if (maxHealthInHearts !== (data[0x36C] / 8)) {
+            console.log("heartcontainerCount has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
+            heartcontainerCount = (data[0x36C] / 8);
+        }
+        return (data[0x36C] / 8) >= 14
     }
 })
 
@@ -1102,7 +1118,11 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        return data[0x36C] / 8 >= 18
+        if (maxHealthInHearts !== (data[0x36C] / 8)) {
+            console.log("heartcontainerCount has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
+            heartcontainerCount = (data[0x36C] / 8);
+        }
+        return (data[0x36C] / 8) >= 18
     }
 })
 
