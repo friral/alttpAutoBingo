@@ -541,8 +541,7 @@ bingoTiles.push({
     tileId: null,
     isOpen: true,
     check: function(data) {
-        // FIXME this got true when I opened the first chest on the right side
-        const locations = [[0x118, 0x20]]
+        const locations = [[0x118, 0x10]]
         return hasAll(data, locations)
         // more GT room data:
         // [0x118, 0x20] right side first room left chest
@@ -1093,8 +1092,8 @@ bingoTiles.push({
     isOpen: true,
     check: function(data) {
         if (maxHealthInHearts !== (data[0x36C] / 8)) {
-            console.log("heartcontainerCount has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
-            heartcontainerCount = (data[0x36C] / 8);
+            console.log("maxHealthInHearts has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
+            maxHealthInHearts = (data[0x36C] / 8);
         }
         return (data[0x36C] / 8) >= 10
     }
@@ -1106,8 +1105,8 @@ bingoTiles.push({
     isOpen: true,
     check: function(data) {
         if (maxHealthInHearts !== (data[0x36C] / 8)) {
-            console.log("heartcontainerCount has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
-            heartcontainerCount = (data[0x36C] / 8);
+            console.log("maxHealthInHearts has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
+            maxHealthInHearts = (data[0x36C] / 8);
         }
         return (data[0x36C] / 8) >= 14
     }
@@ -1119,8 +1118,8 @@ bingoTiles.push({
     isOpen: true,
     check: function(data) {
         if (maxHealthInHearts !== (data[0x36C] / 8)) {
-            console.log("heartcontainerCount has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
-            heartcontainerCount = (data[0x36C] / 8);
+            console.log("maxHealthInHearts has changed from " + maxHealthInHearts + " to " + (data[0x36C] / 8));
+            maxHealthInHearts = (data[0x36C] / 8);
         }
         return (data[0x36C] / 8) >= 18
     }
@@ -1686,19 +1685,19 @@ bingoTiles.push({
     }
 })
 
-bingoTiles.push({
-    content: "Bomb open a cracked floor in any dungeon",
-    tileId: null,
-    isOpen: true,
-    check: function(data) {
-        // TODO complete locations for "Bomb open a cracked floor in any dungeon"
-        const podMainhall = data[0x75] & 0x80;
-        const ttAtticFloor = 0x00;
-        const ipDropToStalfosKnights = 0x00; // not persistent in room data, find another address
-        const ipFreezorRoom = 0x00; // not persistent in room data, find another address
-        return podMainhall || ttAtticFloor || ipDropToStalfosKnights || ipFreezorRoom;
-    }
-})
+// bingoTiles.push({
+//     content: "Bomb open a cracked floor in any dungeon",
+//     tileId: null,
+//     isOpen: true,
+//     check: function(data) {
+//         // TODO complete locations for "Bomb open a cracked floor in any dungeon"
+//         const podMainhall = data[0x75] & 0x80;
+//         const ttAtticFloor = 0x00;
+//         const ipDropToStalfosKnights = 0x00; // not persistent in room data, find another address
+//         const ipFreezorRoom = 0x00; // not persistent in room data, find another address
+//         return podMainhall || ttAtticFloor || ipDropToStalfosKnights || ipFreezorRoom;
+//     }
+// })
 
 bingoTiles.push({
     content: "Bomb open a cracked door in any dungeon",
@@ -1748,34 +1747,34 @@ bingoTiles.push({
     }
 })
 
-bingoTiles.push({
-    content: "Reveal a Hidden Cave under a rock in both Worlds",
-    tileId: null,
-    isOpen: true,
-    check: function(data) {
-        // TODO "Reveal a Hidden Cave under a rock in both Worlds"
-        const lakeHyliaIceRodArea = 0x00;
-        const desertArea = 0x00;
-        const bonkRocks = 0x00;
-        const darkHyliaLakeIceRodArea = data[0x2f7] & 0x02;
-        return (lakeHyliaIceRodArea || desertArea || bonkRocks) && darkHyliaLakeIceRodArea;
-    }
-})
+// bingoTiles.push({
+//     content: "Reveal a Hidden Cave under a rock in both Worlds",
+//     tileId: null,
+//     isOpen: true,
+//     check: function(data) {
+//         // TODO "Reveal a Hidden Cave under a rock in both Worlds"
+//         const lakeHyliaIceRodArea = 0x00;
+//         const desertArea = 0x00;
+//         const bonkRocks = 0x00;
+//         const darkHyliaLakeIceRodArea = data[0x2f7] & 0x02;
+//         return (lakeHyliaIceRodArea || desertArea || bonkRocks) && darkHyliaLakeIceRodArea;
+//     }
+// })
 
-bingoTiles.push({
-    content: "2 Dungeon Blue Rupee Rooms",
-    tileId: null,
-    isOpen: true,
-    check: function(data) {
-        // TODO "2 Dungeon Blue Rupee Rooms"
-        const podBasement = data[0xd5] & 0x01;
-        const epRupeeRoom = 0x00;
-        const mmRupeeRoom1 = data[0x127] & 0x01;
-        const mmRupeeRoom2 = data[0x125] & 0x01;
-        const hoolahanRoom = 0x00;
-        return (podBasement || epRupeeRoom || mmRupeeRoom1 || mmRupeeRoom2 || hoolahanRoom);
-    }
-})
+// bingoTiles.push({
+//     content: "2 Dungeon Blue Rupee Rooms",
+//     tileId: null,
+//     isOpen: true,
+//     check: function(data) {
+//         // TODO "2 Dungeon Blue Rupee Rooms"
+//         const podBasement = data[0xd5] & 0x01;
+//         const epRupeeRoom = 0x00;
+//         const mmRupeeRoom1 = data[0x127] & 0x01;
+//         const mmRupeeRoom2 = data[0x125] & 0x01;
+//         const hoolahanRoom = 0x00;
+//         return (podBasement || epRupeeRoom || mmRupeeRoom1 || mmRupeeRoom2 || hoolahanRoom);
+//     }
+// })
 
 bingoTiles.push({
     content: "Clear 5 Tile Rooms",
