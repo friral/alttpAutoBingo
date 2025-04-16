@@ -1870,7 +1870,7 @@ const playerHeading = [...document.querySelectorAll('h4')]
 const playerName = playerHeading.length ? playerHeading[0].innerText.replace('Playing as: ', '').replace(' Disconnect', '') : ''
 const winConditions = {squares: 25, lines: 12, tile: 26}
 let gameCompleted = false
-const socket = new WebSocket("ws://127.0.0.1:8080")
+const socket = new WebSocket("ws://127.0.0.1:23074")
 socket.binaryType = 'arraybuffer'
 
 socket.onclose = () => {
